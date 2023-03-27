@@ -9,4 +9,4 @@ RICERCA OPERATIVA
             -cambiare il path dell'interpreter di Latex su Mathlab con il comando : 
                 setenv('PATH', ['C:\texlive\2021\bin\win32;' getenv('PATH')]);
              tale path deve ovviamente puntare alla cartella che contiene i file pdftlatex.exe o latex.exe, quindi può variare a seconda del sistema operativo o dell'installazione latex (per me era ad esempio C:\texlive\2023\bin\windows)
--Requisiti 
+-Requisiti PDF : verificare di avere un lettore di pdf e che sia impostato il suo avvio automatico quando si apre un pdf
