@@ -11,3 +11,7 @@ Script e programmi creati durante il percorso Universitario
 Tale path deve ovviamente puntare alla cartella che contiene i file *pdftlatex.exe* o *latex.exe*, quindi può variare a seconda del sistema operativo o dell'installazione latex (per me era ad esempio *C:\texlive\2023\bin\windows*)
 ### Requisiti PDF  
 verificare di avere un lettore di pdf e che sia impostato il suo avvio automatico quando si apre un pdf
+### Note
+-di norma dopo l'esecuzione di una funzione, nella tab del prompt compariranno una lunga serie di scritte usate da latex. Non è un problema fate come nulla fosse. Tanto le informazioni utili stanno in temp.pdf
+-in caso nel prompt compaia una richiesta di input proveniente da Latex, stoppare la compilazione con il tasto rettangolare
+-di norma le funzioni non richiederanno input nel prompt (se lo facessero, stoppate la compilazione). L'unica che lo farà, sarà Hamilton() in modalità asimmetrica
