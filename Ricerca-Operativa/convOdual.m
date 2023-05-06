@@ -1,8 +1,9 @@
-function [tipo,A,b,c,simb] = convOdual(tipo,c,A,simb,b,risultato,stampa)
+function [tipo,A,b,c,simb,VO] = convOdual(tipo,c,A,simb,b,risultato,stampa)
 %Funzioni usate:matrixadder,convOdual,mostrasistema,convertisimboli
 
 %Prende in ingresso:
-% -tipo (tipo di partenza): 1 (minimo), tipo 2 (massimo)  
+% -tipo (tipo di partenza): 1 (minimo), tipo 2 (massimo)
+% - VO: -1 (se sono passato da max a min o viceversa) altrimenti 1
 % -c (coefficienti funzione obiettivo)
 % -A (la matrice)
 % -simb (i simboli di A): -1 (<=), 0(=), 1(>=)
@@ -33,12 +34,23 @@ if(~(stampa==1 || stampa==0))
     disp('errore: stampa compreso deve essere compreso in [0-1]');
     return;
 end
-
-
+VO=1;
+check0=0;
 if(risultato==0)%la standardizzazione segue il tipo
     if(tipo==1)%DUALE
          for i=1:length(simb)
-            if(simb(i)~=0 && b(i)~=0)%<= o >= che non sono x>=0
+            %controllo x_i>=0
+            [check0,~]=unsolovalore(A(i,:));
+            if(check0==1 && b(i)==0)
+                if(simb(i)==-1)
+                   simb(i)=1;
+                   A(i,:)=-1*A(i,:);
+                end
+            else
+                check0=0; %x_i>=3
+            end
+
+            if(simb(i)~=0 && check0~=1)%<= o >= 
                 if(simb(i)==1) %>= diventa <=
                     A(i,:)=-1*A(i,:);
                     b(i)=-1*b(i);
@@ -49,8 +61,7 @@ if(risultato==0)%la standardizzazione segue il tipo
                 zam(i,1)=1;
                 [A]=matrixadder(A,zam,2);
                 [c]=matrixadder(c,[0],2);
-                %{
-                NON HA SENSO, la x_i di scarto non è un vincolo
+           
                 %aggiungo una nuova riga
                 zam=zeros(1,size(A,2));
                 zam(1,size(A,2))=1;
@@ -59,15 +70,10 @@ if(risultato==0)%la standardizzazione segue il tipo
                 [b]=matrixadder(b,[0],1);
                 %aggiungo il segno
                 [simb]=matrixadder(simb,[1],1);
-                %}
             end
-          if(simb(i)==-1)
-                simb(i)=1;
-                A(i,:)=-1*A(i,:);
-                b(i)=-1*b(i);
-          end
+            check0=0;
         end
-    else%PRIMALE (DUBBI su come standardizzare x>=0)
+    else%PRIMALE 
         for i=1:length(simb)
             if(simb(i)==1)%cambio >= con <=
                 A(i,:)=-1*A(i,:);
@@ -95,7 +101,9 @@ if(risultato==1)
             tipo=1;
     end
     c=-1*c;
-    [tipo,A,b,c,simb]=convOdual(tipo,c,A,simb,b,0,0);
+    
+    [tipo,A,b,c,simb,~]=convOdual(tipo,c,A,simb,b,0,0);
+    VO=-1;
 end
 
 if(risultato==2)
@@ -124,25 +132,15 @@ if(risultato==2)
         [b]=matrixadder(b,altare,1);
 
     else%partendo dal duale
-        [tipo,A,b,c,simb]=convOdual(tipo,c,A,simb,b,1,0);%inverto nella forma primale
+        [tipo,A,b,c,simb,VO]=convOdual(tipo,c,A,simb,b,1,0);%inverto nella forma primale
         [tipo,A,b,c,simb]=convOdual(tipo,c,A,simb,b,2,0);%faccio il primale seguendo la prima strategia
     end
 end
 
 if(stampa==1)
     simb=convertisimboli(simb,1);
-    
-    ztipo=5;
-    switch (tipo)
-        case 1
-            ztipo=2;
-        case 2
-            ztipo=1;
-    end
 
-    disp('HO CONVERTITO');
-    disp(' ');
-    mostrasistema(ztipo,c,A,simb,b);
+    mostrasistema(VO,tipo,c,A,simb,b);
 end
 
 

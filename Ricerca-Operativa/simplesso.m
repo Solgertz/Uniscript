@@ -1,15 +1,17 @@
-function [ottimo] = simplesso(c,A,b,base,tipologia)
+function [ottimo] = simplesso(c,A,b,simb,base,tipologia)
 %chiama il test di ottimalità su una base e se possibile svolge uno step
 %del simplesso
 
-% FUNZIONI USATE: indagasoluzione(c,A,b,base,tipologia,mostra),
+%REQUISITO: Deve essere in forma standard
+
+% FUNZIONI USATE: indagasoluzione(),
 % simp(),pausiliario()
 ragionamento=" ";
 
 if(tipologia==1)
-    simb=ones(length(b),1); simb=-1*simb;
-    [~,verbA,verb,~,~]=convOdual(2,c,A,simb,b,1,0);
-    [situa]=pausiliario(verbA,verb); %ricavo duale standard
+    %simb=ones(length(b),1); simb=-1*simb;
+    [~,verbA,verb,~,simb,~]=convOdual(2,c,A,simb,b,1,0);
+    [situa]=pausiliario(verbA,verb,simb); %ricavo duale standard
 else
     [situa]=pausiliario(A,b);
 end
@@ -38,10 +40,11 @@ else
     
     if(tipo~='s' && tipo~='o')
         [ottimo,stringa] = simp(A,Ab,An,b,bn,funz_ob,x,y,base,N,tipo);
+        ragionamento=ragionamento+" "+stringa+" ";
     end
 end
 
-ragionamento=ragionamento+" "+stringa+" ";
+
 
 stampalatex(ragionamento);
 

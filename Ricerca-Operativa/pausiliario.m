@@ -1,8 +1,21 @@
-function [situazione] = pausiliario(A,b)
+function [situazione] = pausiliario(A,b,simb)
 %mi dice se il problema è vuoto
 %situazione=1 problema non vuoto, situazione=0 problema vuoto
 
-
+%ELIMINO TUTTI I VINCOLI NON "="
+i=1;
+j=1;
+dim=length(b);
+while (i<=dim)
+    if(simb(j)~=0)    
+        A(j,:)=[];
+        b(j)=[];
+    end
+    i=i+1;
+    if(simb(j)==0)
+        j=j+1;
+    end
+end
 
 n=size(A,1);%numero equazioni
 m=size(A,2);%numero vincoli

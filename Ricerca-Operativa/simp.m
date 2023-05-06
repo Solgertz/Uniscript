@@ -3,9 +3,6 @@ function [basef,ragionamento] = simp(A,Ab,An,b,bn,funz_ob,x,y,base,N,tipo)
 
 %Funzioni usate: matrivetlate()
 
-
-
-
 ragionamento=" \section{Ragionamento: } ";
 
 emerit=sym(inv(Ab));

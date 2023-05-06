@@ -1,5 +1,7 @@
 function [fra] = frazionamelo(numero)
-
+coeff=sym(numero,'r');
+fra=latex(coeff);
+%{
 dire='';
 coeff=numero;
 coeff=sym(coeff,'r');
@@ -12,5 +14,6 @@ end
 
 dire=string(strjoin(dire));
 fra=dire;
+%}
 
 end

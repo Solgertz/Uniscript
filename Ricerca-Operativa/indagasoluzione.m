@@ -32,6 +32,7 @@ if(tipologia==1)
     bb=zeros(length(b),1);
     An=zeros(size(A,1),size(A,2));
     bn=zeros(length(b),1);
+    %{
     for i=1:length(base)
         Ab(base(i),:)=A(base(i),:); %vi ricopio solo le righe di base
         bb(base(i),:)=b(base(i),:);
@@ -45,7 +46,12 @@ if(tipologia==1)
 
     An( ~any(An,2),: ) = [];%elimina righe di zeri
     bn( ~any(bn,2),: ) = [];
-    
+    %}
+
+    Ab=A(base,:);
+    bb=b(base);
+    An=A(N,:);
+    bn=b(N);
     %x=Ab^-1 bb
     ragionamento=ragionamento+matrivetlate(Ab,"A_b",0)+" \quad "+matrivetlate(bb,"b_b",0)+" \quad "+matrivetlate(An,"A_n",0)+" \quad "+matrivetlate(bn,"b_n",0)+" $$";
     

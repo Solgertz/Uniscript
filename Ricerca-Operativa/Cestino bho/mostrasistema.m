@@ -1,25 +1,29 @@
-function [] = mostrasistema(VO,tipo,fo,A,simb,b)
-%mostra a schermo il sistema -> senza la parentesi graffa
+function [] = mostrasistema(tipo,fo,A,simb,b)
+%mostra a schermo il sistema
 clc
 
-%FUNZIONI USATE: stampalatex()
-
-interesse="$$ \left\{\begin{matrix}";
-%interesse="\matrix{";
-%interesse="\begin{cases}";
-
-
-x=" ";
-%scrivo il tipo di problema
-if(VO==-1)
-    interesse=interesse +" -";
+dfile ='temp.txt';
+if exist(dfile, 'file')  
+    delete(dfile); 
 end
 
+diary temp.txt
+x='';
+disp('\left\{\begin{matrix}');
+
+%scrivo il tipo di problema
 switch tipo
     case 1
-        interesse=interesse+" max \;\;";
+        x=[x,'max '];
     case 2
-        interesse=interesse+" min \;\; ";
+        disp('min ');
+    case 3
+        disp('-max ');
+    case 4
+        disp('-min ');
+    otherwise
+        disp('errore di tipo\n');
+        return
 end
 %scrivo la funzione obiettivo
 
@@ -56,12 +60,11 @@ for i=1:size(fo,2)
     end
 end
 x=[x,'  \\'];
-%x=[x,'  \cr'];
 x=string(strjoin(x));
-interesse=interesse+x;
+disp(x);
 
 %scrivo la matrice a e b
-y=" ";
+y='';
 for i=1:length(simb)
     for j=1:size(A,2)
         z=string(A(i,j));
@@ -85,14 +88,12 @@ for i=1:length(simb)
     y=[y,char(simb(i,1))];
     y=[y,b(i,1)];
     y=[y,'   \\'];
-    %y=[y,'   \cr '];
-    %y=[y,char(newline)];
+    y=[y,char(newline)];
     y=strjoin(y);
 end
 y=string(strjoin(y));
-interesse=interesse+y+" \end{matrix}\right. $$";
-%interesse=interesse+y+" }";
-%interesse=interesse+y+"\end{cases}";
-stampalatex(interesse);
+disp(y);
 
+disp('\end{matrix}\right.');
+diary off
 end

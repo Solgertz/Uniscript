@@ -139,6 +139,8 @@ else
     return;
 end
 
-    stampalatex(ragionamento);
+
+stampalatex(ragionamento);
+
 
 end
