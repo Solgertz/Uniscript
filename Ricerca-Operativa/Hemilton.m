@@ -1,4 +1,4 @@
-function [G] = Hemilton(nodi,T,tipo,K_albero,nodovicino)
+function [G] = Hemilton(nodi,T,tipo,K_albero,nodovicino,esclusiva)
 
 %Funzioni usate: eliminatore(), toppe()
 
@@ -153,6 +153,7 @@ else
 
    if(isempty(K_albero)) %cerco il nodo escluso (se non specificato)
        costov=inf;
+       
        for i=1:nodi
            [~,archiesclu]=find(archi==i); %se erano in ordine crescente prima, lo sono anche ora
            costiescl=[costi(archiesclu(1)),costi(archiesclu(2))];
@@ -163,12 +164,52 @@ else
            end
        end
 
-       [~,j]=find(archi==K_albero); %elimino gli archi del nodo K per fare Kruskal
-       costi(j)=[];
-       archi(:,j)=[];
+
+   else
+       [~,archiesclu]=find(archi==K_albero); %se erano in ordine crescente prima, lo sono anche ora
+       costiescl=[costi(archiesclu(1)),costi(archiesclu(2))];
+       archiv=archi(:,archiesclu(1:2));
+       costov=costiescl(1)+costiescl(2);
+       
+       costi(archiesclu)=[];
+       archi(:,archiesclu)=[];
    end
+   [~,j]=find(archi==K_albero); %elimino gli archi del nodo K per fare Kruskal
+   costi(j)=[];
+   archi(:,j)=[];
+
 
         %Kruskal
+
+    nodus=0;
+    i=1;
+    k=1;
+    archiVI=[];
+    while (length(nodus)<nodi && i<=length(costi))
+        graziami=archiVI;
+        if(~isempty(graziami))
+            lungo=size(graziami,2)+1;
+        else
+            lungo=1;
+        end
+        graziami(:,lungo)=archi(:,i);
+        aiutami=graph(graziami(1,:),graziami(2,:));
+        if(~hascycles(aiutami))
+            archiVI(:,k)=archi(:,i);
+            costov=costov+costi(i);
+            %aggiungo il nodo 
+            if(isempty(find(nodus==archi(1,i))))
+                nodus=[nodus,archi(1,i)];
+            end
+            if(isempty(find(nodus==archi(2,i))))
+                nodus=[nodus,archi(2,i)];
+            end
+            k=k+1;
+        end  
+        i=i+1;
+    end
+
+   %{
    k=1;
    for i=1:length(costi)
        if(i~=1)
@@ -183,7 +224,7 @@ else
             k=k+1;
        end
    end
-
+   %}
    xi=[archiv,archiVI];
 
 
@@ -248,5 +289,7 @@ else
     
 
     ragionamento=ragionamento+"\section{Risultato}"+"$$ "+latex(sym(costov))+" \leq "+"V_o"+" \leq "+latex(sym(costofin))+" $$";
-    Ystampalatex(ragionamento);
+    stampalatex(ragionamento);
+
+    [valutfinal] = BeBHem(xi,costov,costofin,nodi,G,K_albero,esclusiva);
 end

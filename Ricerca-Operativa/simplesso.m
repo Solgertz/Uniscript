@@ -12,11 +12,13 @@ if(tipologia==1)
     %simb=ones(length(b),1); simb=-1*simb;
     [~,verbA,verb,~,simb,~]=convOdual(2,c,A,simb,b,1,0);
     [situa]=pausiliario(verbA,verb,simb); %ricavo duale standard
+    situa=1; % questo controllo non funziona bene
 else
     [situa]=pausiliario(A,b);
+    situa=1; % questo controllo non funziona bene
 end
 if(situa==0)
-    stringa=" \section{PROBLEMA VUOTO} ";
+    ragionamento=" \section{PROBLEMA VUOTO} ";
 else
     if(situa==2)
         disp("Errore algorimto Pausiliario");
@@ -32,10 +34,6 @@ else
     end
     if(tipo=='o')
         ragionamento=ragionamento+"Siamo già all'ottimo";
-    end
-    
-    if(tipo=='p')
-    
     end
     
     if(tipo~='s' && tipo~='o')

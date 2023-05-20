@@ -5,22 +5,44 @@ function [Aw,bnew,dire] = gomory(A,N,B,x,b)
 
 dire="\section{Calcolo dei piani}";
 
+A=sym(A);
+%x=sym(x);
+b=sym(b);
 
 Ab=A(:,B);
 An=A(:,N);
 Ainv=inv(Ab);
 Amod=Ainv*An; %B*N
 bmod=x(B);
-r=mod(bmod,1)~=0; %mi restituisce gli indici che hanno valore
-r=find(r);
-
+ragu=x;
+r=[]; %mi restituisce gli indici che hanno valore
+for i=1:length(bmod)
+    %r(i)=mod(bmod(i),1);
+    if(contains(num2str(bmod(i)),".")) %unico metodo che mi fa lavorare con numeri grandi
+        r(i)=1;
+    end
+end
+bulbasaur=[];
+for i=1:length(ragu)
+    %r(i)=mod(bmod(i),1);
+    if(contains(num2str(ragu(i)),".")) %unico metodo che mi fa lavorare con numeri grandi
+        bulbasaur(i)=1;
+    end
+end
+bmod=sym(bmod);
 if(~isempty(r))
+    r=find(r);
     %escludo le righe non frazionarie secondo r
     Amodfraz=Amod(r,:);
     bmodfraz=bmod(r);
     %calcolo la parte frazionaria
     Amodfraz=partefraz(Amodfraz);
     bmodfraz=partefraz(bmodfraz);
+    r=bulbasaur;
+    r=find(r);
+else
+    dire="\section{NON CI SONO PIANI DI TAGLIO}";
+    return;
 end
 
 %ricavo i vincoli
@@ -32,6 +54,9 @@ end
 Anew=Amodfraz*Ab;
 bnew=(Amodfraz*b)-(Anext*bmodfraz);
 %}
+
+
+
 
 for i=1:size(Amodfraz,1)
     for j=1:size(Amodfraz,2)
@@ -52,19 +77,20 @@ for i=1:size(Anew,1)
     [numi,dumi]=rat(s);
     l=dumi(1);
     for j=2:length(dumi)  
-        l = lcm(l,dumi(j))%mcm
+        l = lcm(l,dumi(j));%mcm
     end
     emi=l./dumi;
 
     s=numi.*emi;
     g=s(1);
     for j=2:length(s)  
-        g = gcd(g,s(j))%MCD
+        g = gcd(g,s(j));%MCD
     end
     s=s/g;
     Anew(i,:)=s(1:length(s)-1);
     bnew(i)=s(length(s));
 end
+
 
 dire=dire+"$$"+matrivetlate(B,"B",0)+"\qquad "+matrivetlate(N,"N",0)+"$$";
 dire=dire+"$$"+matrivetlate(A,"A",0)+"\qquad "+matrivetlate(Ab,"A_B",0)+"\qquad "+matrivetlate(An,"A_N",0)+"$$";
@@ -73,6 +99,8 @@ dire=dire+"$$"+matrivetlate(Ainv,"A^{-1}_B",0)+"\qquad "+matrivetlate(Amod,"\til
 
 dire=dire+"\section{Piani di taglio}";
 %mostro i piani di taglio
+Amod=Amodfraz;
+bmod=bmodfraz;
 m=size(Amod,1);
 n=size(Amod,2);
 for i=1:m
@@ -114,85 +142,7 @@ end
 Aw=zeros(size(Anew,1),size(A,2));
 Aw(:,B)=Anew;
 
+Aw=double(Aw);
+bnew=double(bnew);
 
-%{
-%Amod e bmod sono per <=
-
-%~A
-Ab=A;
-An=A;
-Ab(:,N)=[];
-An(:,B)=[];
-sym Ab;
-Ab1=inv(Ab);
-Ati=Ab1*An;
-
-Amod=zeros(length(B),length(N));
-bmod=zeros(length(B),1);
-dire="\section{Piani di Taglio} ";
-
-for j=1:length(B)
-    dire=dire+"$\text{piano per }r="+string(B(j))+" \quad";
-    for i=1:length(N)
-        [ziza]=partefraz(Ati(j,i));
-        Amod(j,i)=ziza;
-        [frenk]=frazionamelo(ziza);
-        if(ziza>=0)
-            dire=dire+"+"+frenk+" x_"+string(N(i))+"  ";
-        else
-            dire=dire+frenk+" x_"+string(N(i))+"  ";
-        end
-    end
-    [xr]=partefraz(x(B(j)));
-    bmod(j,1)=xr;
-    [fxr]=frazionamelo(xr);
-    dire=dire+">= "+ fxr+"$\\ ";
-end
-
-
-%riscrivo i vincoli(caso a 2 tagli)
-
-bab=length(B);
-bvs=length(N);
-h=zeros(size(A,1),1+bab);
-h(:,1)=b;
-
-for i=1:size(A,1)
-    h(i,2:bab+1)=-Ab(i,:); %variabili N
-end
-
-tagl=zeros(size(Amod,1),1+bab);
-btagl=bmod;
-for i=1:size(Amod,1)
-    for j=1:size(Amod,2)
-        tagl(i,:)=tagl(i,:)+(Amod(i,j)*h(j,:));
-    end
-end
-
-btagl=btagl-tagl(:,1);
-tagl(:,1)=[];
-btagl=-btagl;
-tagl=-tagl;
-
-format rat;
-dire=dire+"\section{Vincoli di Taglio}";
-var=(1:length(B));
-
-for j=1:length(B)
-    dire=dire+"$\text{taglio per }r="+string(B(j))+" \quad";
-    for i=1:length(N)
-        [chepasa]=frazionamelo(tagl(j,i));
-        if(tagl(j,i)>=0)
-            dire=dire+"+"+chepasa+" x_"+string(var(i))+"  ";
-        else
-            dire=dire+chepasa+" x_"+string(var(i))+"  ";
-        end
-    end
-    cheposa=frazionamelo(btagl(j));
-    dire=dire+"<= "+ cheposa+"$ \\";
-end
-
-%stampalatex(dire);
-%}
-%stampalatex(dire);
 end

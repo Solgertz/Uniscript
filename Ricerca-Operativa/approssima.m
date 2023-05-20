@@ -4,6 +4,7 @@ function [val] = approssima(val,mod)
 %       -mod 0 verso sinistra (difetto), mod 1 verso destra (eccesso)
 %       -mod 2   vicino a 0,  mod 3 lontano da 0
 
+
 %ESEMPI:
 %       mod=0   x=-3,4  y=3,4   ->   x=-4   y=3
 %       mod=1   x=-3,4  y=3,4   ->   x=-3   y=4
