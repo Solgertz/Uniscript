@@ -59,12 +59,12 @@ if(~isempty(archiobblig))%istanzio array di archiobblig e costiobblig
     if(~isempty(kindici))
         if(length(kindici)>1)
             karchi=[obbligh(:,kindici(1)),obbligh(:,kindici(2))];
-            kcosti=[obbligh(kindici(1)),obbligh(kindici(2))];
+            kcosti=[costiobblig(kindici(1)),costiobblig(kindici(2))];
             obbligh(:,kindici(1:2))=[];
             costiobblig(kindici(1:2))=[];
         else
             karchi=obbligh(:,kindici);
-            kcosti=obbligh(kindici);
+            kcosti=costiobblig(kindici);
             obbligh(:,kindici)=[];
             costiobblig(kindici)=[];
         end
@@ -84,17 +84,17 @@ end
 
 
 %costo finale=costi archi esclusi + costi obbligati
-if(isempty(kcosti))
-    costiescl=[costi(archiesclu(1)),costi(archiesclu(2)),costiobblig]; %nessun arco k_albero obbligato
-    archiv=archi(:,archiesclu(1:2)); %archi esclusi
-else
+if(~isempty(kcosti))
     if(length(kcosti)==1)
-        costiescl=[costi(archiesclu(1)),costiobblig]; %c'è un arco k-albero obbligato
+        costiescl=[costi(archiesclu(1)),kcosti]; %c'è un arco k-albero obbligato
         archiv=[archi(:,archiesclu(1)),karchi]; %archi esclusi
     else
-        costiescl=costiobblig; %ci sono entrambi
-        archiv=karchi;
+        costiescl=kcosti(1:2); %ci sono entrambi
+        archiv=karchi(:,1:2);
     end
+else
+    costiescl=[costi(archiesclu(1)),costi(archiesclu(2))]; %nessun arco k_albero obbligato
+    archiv=archi(:,archiesclu(1:2)); %archi esclusi
 end
 costov=sum(costiescl);
 %archi finali= archi esclusi (archiv) + pool di kruskal

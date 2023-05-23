@@ -1,6 +1,6 @@
 function [G] = Hemilton(nodi,T,tipo,K_albero,nodovicino,esclusiva)
 
-%Funzioni usate: eliminatore(), toppe()
+%Funzioni usate: eliminatore(), toppe(),BeBHem()
 
 %INPUT:
 %-T         se 'a': matrice quadrata completa(con diagonale)
@@ -14,6 +14,8 @@ function [G] = Hemilton(nodi,T,tipo,K_albero,nodovicino,esclusiva)
 %           PER SIMMETRICO
 %-K_albero      nodo di partenza per Vi (omettibile)
 %-nodovicino    nodo di partenza per Vs (omettibile)
+%-esclusiva:  vettore colonna degli archi da istanziare per il BrenchEBound
+%                   nella forma  [i1,j1;i2,j2;...]
 
 
 %c è una matrice di archi
@@ -185,7 +187,7 @@ else
     i=1;
     k=1;
     archiVI=[];
-    while (length(nodus)<nodi && i<=length(costi))
+    while (length(nodus)<=nodi && i<=length(costi))
         graziami=archiVI;
         if(~isempty(graziami))
             lungo=size(graziami,2)+1;
@@ -291,5 +293,5 @@ else
     ragionamento=ragionamento+"\section{Risultato}"+"$$ "+latex(sym(costov))+" \leq "+"V_o"+" \leq "+latex(sym(costofin))+" $$";
     stampalatex(ragionamento);
 
-    [valutfinal] = BeBHem(xi,costov,costofin,nodi,G,K_albero,esclusiva);
+    %[valutfinal] = BeBHem(xi,costov,costofin,nodi,G,K_albero,esclusiva);
 end

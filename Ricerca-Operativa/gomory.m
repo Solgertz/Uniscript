@@ -55,9 +55,7 @@ Anew=Amodfraz*Ab;
 bnew=(Amodfraz*b)-(Anext*bmodfraz);
 %}
 
-
-
-
+%{
 for i=1:size(Amodfraz,1)
     for j=1:size(Amodfraz,2)
         if(j==1)
@@ -91,7 +89,7 @@ for i=1:size(Anew,1)
     bnew(i)=s(length(s));
 end
 
-
+%}
 dire=dire+"$$"+matrivetlate(B,"B",0)+"\qquad "+matrivetlate(N,"N",0)+"$$";
 dire=dire+"$$"+matrivetlate(A,"A",0)+"\qquad "+matrivetlate(Ab,"A_B",0)+"\qquad "+matrivetlate(An,"A_N",0)+"$$";
 dire=dire+"$$"+matrivetlate(Ainv,"A^{-1}_B",0)+"\qquad "+matrivetlate(Amod,"\tilde{A}",0)+"\qquad "+matrivetlate(bmod,"\tilde{b}",0)+"$$";
@@ -118,6 +116,7 @@ for i=1:m
     dire=dire+" $\\";
 end
 
+%{
 dire=dire+"\section{Vincoli di taglio}";
 
 %mostro i vincoli di taglio
@@ -144,5 +143,6 @@ Aw(:,B)=Anew;
 
 Aw=double(Aw);
 bnew=double(bnew);
-
+%}
+Aw=[];bnew=[];
 end

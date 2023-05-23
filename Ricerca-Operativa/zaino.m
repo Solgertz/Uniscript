@@ -81,7 +81,6 @@ else %caso binario
     vi=approssima(vi,0);
     
     simb=-ones(size(A,1),1);
-    %[usa]=BranchEBound(-c,A,b,simb,'p',vs,xs,vi,xi,1,[1,3,1]);
 end
 
 dire=dire+"\section{Valutazioni} $"+matrivetlate(xi,"x_i",0)+"\qquad "+matrivetlate(vi,"v_i",0)+" $\\$ "+matrivetlate(xs',"x_s",0)+"\qquad "+matrivetlate(vs,"v_s",0)+" $";

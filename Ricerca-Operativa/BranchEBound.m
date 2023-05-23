@@ -6,7 +6,9 @@ function [valutfinal] = BranchEBound(c,A,b,simb,tipo,vs,xs,vi,xi,mod,scelta)
 %-mod:  bipartito classico (0), bipartito binario (1), Hamitlon (2). Non è preso in
 %       cosiderazione il caso multipartito
 %-scelta:    in questo caso è indicato un ordine di istanziazione delle
-%            variabili (che può non essere completo)
+%            variabili (che può non essere completo). E' un vettore riga
+%            degli indici
+%-tipo:  'p' se problema di massimo 'd' se problema di minimo
 
 
 if(isempty(scelta))

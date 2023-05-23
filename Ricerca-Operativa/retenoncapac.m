@@ -9,7 +9,7 @@ function [E] = retenoncapac(tipo,v,vincoli,bilanci,costi)
 pi=vincoli(1:2:length(vincoli));
 pf=vincoli(2:2:length(vincoli));
 
-nodi=6;
+nodi=max(vincoli);
 archi=length(vincoli)/2;
 
 E=zeros(nodi,archi);

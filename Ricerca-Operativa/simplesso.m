@@ -2,7 +2,15 @@ function [ottimo] = simplesso(c,A,b,simb,base,tipologia)
 %chiama il test di ottimalità su una base e se possibile svolge uno step
 %del simplesso
 
-%REQUISITO: Deve essere in forma standard
+%INPUT:
+%- simb:  vettore colonna dei simboli del problema  
+%    es: 4 vincoli con rispettivamente <=,<=,=,>=  si traduce in simb=[-1;-1;0;1]
+
+%OUTPUT:
+% Base inutile-> non è possibile nemmeno fare un passo del simplesso 
+% Siamo già all'ottimo -> la base era ottima
+% Negli altri casi viene mostrato un passo del simplesso
+
 
 % FUNZIONI USATE: indagasoluzione(),
 % simp(),pausiliario()

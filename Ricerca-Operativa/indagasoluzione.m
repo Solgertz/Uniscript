@@ -9,8 +9,9 @@ function [Ab,An,bn,x,y,funz_ob,N,tipo] = indagasoluzione(c,A,b,base,tipologia,mo
 
 %INPUT:
 % - c,A,b:  sono le corrispondenti di una forma standard
+% - base:  vettore riga della base  es: B=(1,3)  è [1,3]
 % - tipologia:  1(primale), 2(il suo duale)
-% - mostra: 0 (no), 1 (si)
+% - mostra: 0 (no), 1 (si) indica se stampare i risultati su latex
 
 %ragionamento=ragionamento+"";
 ragionamento=' ';%stringa che serve per stampare i calcoli in latex
