@@ -62,16 +62,16 @@ format rat;
     
     
     %calcolo la soluzione con Gomory
-    %{
-    [xg,vg]=linprog(cugu,Ag,bg,Augu,bugu,LB,UB);
+    
+    [xg,vg]=linprog(cugu,-Ag,-bg,Augu,bugu,LB,UB);
     if(tipo=='p')
         vg=approssima(-vg,0);
     else
         vg=approssima(vg,1);
     end
-    %}
+    
     dire=dire+" \section{Riprove} $$ \text{Soluzione intlinprog: }"+matrivetlate(xin,"x_{int}",0)+"\qquad "+matrivetlate(vin,"v_{int}",0)+"$$";
-    %dire=dire+" $$\text{Soluzione con gomory: }"+matrivetlate(xg,"x_{g}",0)+"\qquad "+matrivetlate(vg,"v_{g}",0)+"$$";
+    dire=dire+" $$\text{Soluzione con gomory: }"+matrivetlate(xg,"x_{g}",0)+"\qquad "+matrivetlate(vg,"v_{g}",0)+"$$";
 
     stampalatex(dire);
 

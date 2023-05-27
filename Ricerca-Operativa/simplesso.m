@@ -5,6 +5,7 @@ function [ottimo] = simplesso(c,A,b,simb,base,tipologia)
 %INPUT:
 %- simb:  vettore colonna dei simboli del problema  
 %    es: 4 vincoli con rispettivamente <=,<=,=,>=  si traduce in simb=[-1;-1;0;1]
+%-Tipologia: 1(primale), 2(il suo duale)
 
 %OUTPUT:
 % Base inutile-> non è possibile nemmeno fare un passo del simplesso 

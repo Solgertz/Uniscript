@@ -66,7 +66,7 @@ classdef nodoalbero
                     if(cond1)
                         mat(i,unstoppable+1)=1;%a.arsx;%nodo sinistro
                         if(a.tipologia==0)
-                            uno=string("$x_{"+num2str(a.scelta)+"}= "+num2str(a.arsx))+"$";
+                            uno=string("$x_{"+num2str(a.variabile)+"}= "+num2str(a.arsx))+"$";
                         end
                         if(a.tipologia==2)
                             uno=string("$x_{"+num2str(a.variabile)+"}\leq "+num2str(a.arsx))+"$";
@@ -79,7 +79,7 @@ classdef nodoalbero
                     if(cond2)
                         mat(i,unstoppable+2)=1;%a.ardx;%nodo destro
                         if(a.tipologia==0)
-                           due=string("$x_{"+num2str(a.scelta)+"}= "+num2str(a.ardx))+"$";
+                           due=string("$x_{"+num2str(a.variabile)+"}= "+num2str(a.ardx))+"$";
                         end
                         if(a.tipologia==2)
                             due=string("$x_{"+num2str(a.variabile)+"}\geq "+num2str(a.ardx))+"$"; 
@@ -112,20 +112,16 @@ classdef nodoalbero
             [s,obj]=obj.padre(obj.id(1),obj.id(2),ulb);
             
             if(isempty(s)) %solo la radice
-                if(obj.tipologia==0)
-                    obj.scelta=obj.variabile;
-                end
+                
             else
                 obj.tipologia=s.tipologia;
                 if(obj.tipologia==0 || obj.tipologia==2)
-                    if(obj.tipologia==0)
-                        obj.variabile=s.scelta;
+                    if(y)
                     end
                     obj.dima=s.dima;
                     obj.vincoli=s.vincoli;
                     vett=zeros(1,obj.dima);
-                    %vett(s.variabile)=1;
-                    vett(obj.variabile)=1;
+                    vett(s.variabile)=1;
                     vett=num2cell(vett);
                     if(isempty(s.vincoli))
                         if(rem(obj.id(2),2)~=0) %numero dispari

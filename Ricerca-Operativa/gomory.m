@@ -1,4 +1,4 @@
-function [Aw,bnew,dire] = gomory(A,N,B,x,b)
+function [Alfa,beta,dire] = gomory(A,N,B,x,b)
 %fa uscire fuori i vincoli di taglio
 
 %Funzioni usate:partefraz(), frazionamelo()
@@ -144,5 +144,9 @@ Aw(:,B)=Anew;
 Aw=double(Aw);
 bnew=double(bnew);
 %}
-Aw=[];bnew=[];
+
+Alfa=zeros(size(Amod,2),length(B)+length(N));
+Alfa(:,N)=Amod;
+beta=double(bmod);
+
 end

@@ -1,4 +1,4 @@
-function [valutfinal] = BranchEBound(c,A,b,simb,tipo,vs,xs,vi,xi,mod,scelta)
+function [valutfinal] = BeBzaino(c,A,b,simb,tipo,vs,xs,vi,xi,mod,scelta)
 
 %Classi usate: nodoalbero
 
@@ -39,9 +39,10 @@ else
         a=nodoalbero(0,1,vs,vi,floor(xi(scelta(1))),ceil(xi(scelta(1))),scelta(1),lista,size(A,2),2);
     end
 end
-scelta(1)=[]; 
+a.scelta=scelta(1);
+%scelta(1)=[]; 
 lista=a.albero;%permette di aggiornare le caratteristiche della lista (va messo a ogni update)
-dim=length(scelta);%nodi massimi
+dim=length(c);%nodi massimi
 finale=a; %contiene l'albero totale
 tisca=1;
 rimuovere=[];
@@ -75,8 +76,24 @@ for i=1:dim  %visito per livello
         end
         %rilassamento del problema
         [ce,nA,nb,Aeq,beq,LB,UB,~,~,~]=sostitutore(c,Amod,bmod,simboli,tipo);
-        [x,v]=linprog(ce,nA,nb,Aeq,beq,LB,UB);
-
+        cUB=UB;
+        for ic=1:size(UB,1)
+            if(cUB(ic)==Inf)
+                cUB(ic)=1;
+            end
+        end
+        [x,v]=linprog(ce,nA,nb,Aeq,beq,LB,cUB);
+        
+         %cerco la prima componente frazionaria
+        for  ic=1:length(x)
+            if(~(x(ic)==0 || x(ic)==1))
+                primato=ic;
+                break;
+            end
+        end
+        %scelta=[ic,scelta];
+        a.scelta=ic;
+        
         if(isempty(x))%problema vuoto
             a.stato=2;
             lista=[lista,a];
@@ -104,7 +121,14 @@ for i=1:dim  %visito per livello
              if(a.vs>aggiornabile)   %regola di taglio 3
                 %verifico ammissibilità
                 [~,Aprova,bprova,~,~,~]=convOdual(2,c,A,simb,b,0,0);
-                if(Aprova*x<=bprova)
+                condca=true;
+                for z=1:length(x)
+                    if(floor(x(i))~=x(i) || (x(i))~=x(i))
+                        condca=false;
+                        break;
+                    end
+                end
+                if(condca && Aprova*x<=bprova)
                     aggiornabile=a.vs;
                     a.vi=aggiornabile;
                     a.stato=3;
@@ -182,7 +206,7 @@ for i=1:dim  %visito per livello
          lista=[lista,a];
         end
     end
-    scelta(1)=[];
+    %scelta(1)=[];
 end
     
     

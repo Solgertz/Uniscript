@@ -1,4 +1,4 @@
-function [xw,pimu] = capacitata(archi_c_u,b)
+function [solx,solpi] = capacitata(archi_c_u,b,r)
 
 %funzioni usate: VetLin2mat()
 
@@ -66,66 +66,41 @@ else
     EU=E(:,dimT+dimL+1:dimT+dimU+dimL);
 end
 
-b(1)=[];        %il primo vincolo è eliminato (sistema sovradeterminato)
+%SATURAZIONE
+for i=1:dimU  
+    b(U(1,i))=b(U(1,i))+uU(i);
+    b(U(2,i))=b(U(2,i))-uU(i);
+end
 
-%CALCOLO TRIPARTIZIONE, AMMISSIBILITà e soluzine
-[xw,pimu,ridottiL,ridottiU,xammis,xdeg,piammis,pideg] = TUTL(ET,EU,b,cTT,cLT,cUT,uU,uL,uT,dimT,dimU,dimL,T,L,U);
+%b(1)=[];        %il primo vincolo è eliminato (sistema sovradeterminato)
 
-
-%a=numero archi, n=numero nodi
-
-%PROBLEMA FLUSSO COSTO MINIMO (Fcm)
-% min c^Tx
-% Ex=b
-% l<=x<=u
-% 1->3   E1,(13)=-1   E3,(13)=1  E=0
-% x ha ordine lessicografico
-% sum(b)=0   (altrimenti aggiungere nodo fittizio che porti a zero la somma e a cui sono collegati tutti)
-
-% Duale Fcm
-% max p^Tb
-% p^T E <=c^T    con p=pi greco simbolo
+%AMMISSIBILITà e SOUZIONI
+[uno,ottimo,ridottiL,ridottiU,solx,solpi,xtot] = reteammis(nodi,T,L,U,dimT,dimL,dimU,b,cTT,cLT,cUT,uT,uU);
 
 
-% Cammino minimo (Dijsktra) -> problema di flusso a costo minimo modificato
-% u=+inf
-%  b_radice=a-(n-1)   b_altri=1
-
-% Minima connessione -> Fcm modificato: trovare T{archi} per cui per ogni
-% coppia di nodi si trova percorso minimo
-
-% Flusso Massimo (Ford Falkerson)
-% può essere illimitato superiormente se ci sono troppi +inf in u
-% dati s=partenza, t=arrivo, v=flusso totale spedito da s a t
-% max v
-% Ex=b
-% 0<=x<=u
-% bi=-v se vincolo di partenza, bi=v se vincolo di arrivo, bi=0 altrimenti
+%UN PASSO DEL SIMPLESSO
+if(~ottimo)
+    [tre,situa] = passoSimplessorete(T,L,U,ridottiU,ridottiL,archi_c_u,xtot);
+end
 
 
-% Albero di copertura T (connesso e senza cicli)
-% da E va cancellata sempre la riga del nodo 1 (sovradeterminata)
-% E_T  è la sottomatrice ottenuta prendendo l'albero di copertura T
+%DIJSKTRA (cammino minimo)
+[due,albero]=dijsktra(archi_c_u(:,1:3),nodi,r);
+if(~isempty(albero))
+    userei=setdiff(archi_c_u(:,[1:2]),albero,"rows");
+    baus=ones(nodi,1);
+    baus(1)=-(nodi-1);
+    [xtot] = smartflux(nodi,albero',userei',size(albero,1),size(userei,1),baus);
+    due=dire+matrivetlate(xtot,"x",1);
+end
 
 
-% la visita per foglie fa ottenere E_T
-
-% Sul flusso Fcm
-% Base=(T,L)
-% x_T=E_T^{-1}b  x_L=0   soluzione di base
-% p^T=c_T^TE_T^{-1}     potenziale di base
-% Cij^p=cij+pi-pj   è il costo ridotto
-% ammissibile se x_T>=0, degenere se almeno un x_T=0 
-% ammissibile se p^TE_L<=c_L
-% ammissibile con costi ridotti (Bellman) (i,j \in L) se Cij^p>=0  degenere se almeno un Cij^p=0
-% ottimo=x e p ammissibili
-
-%b a componenti intere allora anche flusso di base lo è
-
-% visita per foglie : partire da una foglia e a ritroso determinare quanto
-% assegnare agli archi
+%FORD-FALKERSON
+[Ns,Nt,x,v,quattro] = fordfalkerson([archi_c_u(:,[1,2,4]),zeros(archi,1),zeros(archi,1)],archi,nodi);
 
 
+dire=uno+" "+tre+" "+due+quattro;
+stampalatex(dire);
 
 
 end

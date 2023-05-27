@@ -293,5 +293,5 @@ else
     ragionamento=ragionamento+"\section{Risultato}"+"$$ "+latex(sym(costov))+" \leq "+"V_o"+" \leq "+latex(sym(costofin))+" $$";
     stampalatex(ragionamento);
 
-    %[valutfinal] = BeBHem(xi,costov,costofin,nodi,G,K_albero,esclusiva);
+    [valutfinal] = BeBHem(xi,costov,costofin,nodi,G,K_albero,esclusiva);
 end
