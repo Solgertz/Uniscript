@@ -18,14 +18,15 @@ Tale path deve ovviamente puntare alla cartella che contiene i file *pdftlatex.e
 -di norma dopo l'esecuzione di una funzione, nella tab del prompt compariranno una lunga serie di scritte usate da latex. Non è un problema fate come nulla fosse. Tanto i risultati stanno in temp.pdf
 -in caso nel prompt compaia una richiesta di input proveniente da Latex, stoppare la compilazione con il tasto rettangolare del debugger
 -di norma le funzioni non richiederanno input nel prompt (se lo facessero, stoppate la compilazione). L'unica che lo farà, sarà Hamilton() in modalità asimmetrica
+-tutti gli script non menzionati in questa lista sono di difficile utilizzo per via degli input richiesti (sono funzioni di utility delle funzioni generali)
 ### Lista script completamente funzionanti
 -assegnamento() : permette di risolvere il problema di assegnamento (anche il caso di persone che si rifiutano di fare determinati lavori)
 -convOdual() : prende in ingresso un sistema e lo converte come richiesto dall'utente (primale standard, duale standard, duale)
--Hemilton() : risolve il problema del TSPS. Se volete provare anche il relativo Brench And Bound togliere il commento dalla riga 296
--zaino() :  permette di risolvere il problema dello zaino
+-Hemilton() : risolve il problema del TSPS e vi applica il BranchAndBound agli archi specificati
+-zainocompleto() :  permette di risolvere il problema dello zaino (intero e binario insieme), 
 -indagasoluzione() : permette di valutare l'ammissibilità di una base
 -simplesso() : applica l'algoritmo del simplesso se possibile
 -valPLI() : permette di risolvere tramite valutazioni un problema di PLI e inoltre calcola i tagli di Gomory
+-capacitata(): permette di risolvere il problema delle reti capacitate (ammissibilità, un passo del simplesso, Dijsktra, Faulk-Falkerson)
 ### Lista script non testati a sufficienza
 - BranchEBound() : permette di fare il branch&bound di un qualsiasi problema
--costoridotto() : permette di calcolare il costo ridotto di un arco
