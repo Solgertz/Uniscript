@@ -2,7 +2,7 @@ function [Alfa,beta,dire] = gomory(A,N,B,x,b)
 %fa uscire fuori i vincoli di taglio
 
 %Funzioni usate:partefraz(), frazionamelo()
-
+Alfa=[];beta=[];
 dire="\section{Calcolo dei piani}";
 
 A=sym(A);
@@ -145,7 +145,7 @@ Aw=double(Aw);
 bnew=double(bnew);
 %}
 
-Alfa=zeros(size(Amod,2),length(B)+length(N));
+Alfa=zeros(size(Amod,1),length(B)+length(N));
 Alfa(:,N)=Amod;
 beta=double(bmod);
 

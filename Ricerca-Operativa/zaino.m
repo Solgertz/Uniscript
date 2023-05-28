@@ -1,4 +1,4 @@
-function [xs,vs,xi,vi] = zaino(valore,peso,P,tipo)
+function [xs,vs,xi,vi,dire] = zaino(valore,peso,P,tipo)
 
 %FUNZIONI USATE: linprog(),stampalatex()
 %INPUT:
@@ -51,6 +51,30 @@ if(tipo=='i')%zaino intero
     end
     vi=(-c)*(xi');
     vi=approssima(vi,0);
+
+
+         %Conversione vincoli
+    Augu=A;
+    for i=1:size(Augu,1)
+         %CONVERSIONE IN = dei vincoli
+         %aggiungo var di resto
+         zam=zeros(size(Augu,1),1);
+         zam(i,1)=1;
+         [Augu]=matrixadder(Augu,zam,2);
+    end
+
+    %max,Augu,x>=
+    LB=zeros(size(Augu,2),1);
+    UB=inf(size(Augu,2),1);
+    cugu=c;
+    cugu((size(A,2)+1):(size(Augu,2)))=0; %var di scarto (essendo di minimo si usano variabili di slack)
+    [izi,bizi]=linprog(cugu,[],[],Augu,b,LB,UB);
+
+    [base,N]=ricavBase(Augu,b,izi,'d');
+
+    [Alfa,beta,essi] = gomory(Augu,N,base,izi,b);
+
+    dire=dire+" "+essi;
     
 else %caso binario
 
@@ -91,32 +115,12 @@ else %caso binario
 
 
     [valutfinal] = BeBzaino(-c,A,b,[-1],'p',vs,xs,vi,xi,1,primato);
-        %Conversione vincoli
-    Augu=A;
-    for i=1:size(Augu,1)
-         %CONVERSIONE IN = dei vincoli
-         %aggiungo var di resto
-         zam=zeros(size(Augu,1),1);
-         zam(i,1)=1;
-         [Augu]=matrixadder(Augu,zam,2);
-    end
-
-    %max,Augu,x>=
-    LB=zeros(size(Augu,2),1);
-    UB=ones(size(Augu,2),1);
-    cugu=-c;
-    cugu((size(A,2)+1):(size(Augu,2)))=0; %var di scarto (essendo di minimo si usano variabili di slack)
-    [izi,bizi]=linprog(cugu,[],[],Augu,b,LB,UB);
-
-    [base,N]=ricavBase(Augu,b,izi,'d');
-
-    %[Alfa,beta,essi] = gomory(Augu,N,base,xs,b);
+   
     %simb=-ones(size(A,1),1);
 end
 
 
 
 dire=dire+"\section{Valutazioni} $"+matrivetlate(xi,"x_i",0)+"\qquad "+matrivetlate(vi,"v_i",0)+" $\\$ "+matrivetlate(xs',"x_s",0)+"\qquad "+matrivetlate(vs,"v_s",0)+" $";
-dire=dire+" "+essi;
-stampalatex(dire);
+%stampalatex(dire);
 end

@@ -46,7 +46,8 @@ for i=1:dim  %visito per livello
         end
         %rilassamento del problema
         
-        [x,v,ammiss]=KBeB(A,bmod,simboli,K_albero,nodi,a.id); %ordinati in colonna
+        %[x,v,ammiss]=KBeB(A,bmod,simboli,K_albero,nodi,a.id); %ordinati in colonna
+        [x,v,ammiss]=Kruskaladattivo(A,bmod,simboli,K_albero,nodi,a.id); %ordinati in colonna
 
         if(isempty(x))%problema vuoto
             a.stato=4;
