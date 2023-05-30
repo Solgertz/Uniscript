@@ -2,6 +2,46 @@
 clear;
 clc;
 
+%{
+% Definizione della funzione
+funzione = @(x) x(1)^2 + x(2)^2 +x(1)*x(2); % Esempio di una funzione a due variabili
+
+% Vettore di input
+x = [2, 3]; % Esempio di un vettore di input
+
+% Calcolo della soluzione
+soluzione = funzione(x);
+
+% Visualizzazione della soluzione
+disp(soluzione);
+%}
+
+
+% Definizione della funzione anonima
+funzione_anonima = @(x) 0.5*x(1)^2+x(2)^2-2*x(1)*x(2)+x(1);
+
+% Punto in cui calcolare il gradiente
+punto = [0, 1];
+
+% Creazione delle variabili simboliche
+syms x y
+
+% Conversione delle variabili simboliche in un vettore
+variabili = [x, y];
+
+% Conversione della funzione anonima in una funzione simbolica
+funzione_simbolica = symfun(funzione_anonima(variabili), variabili);
+
+% Calcolo del gradiente
+gradiente_simbolico = gradient(funzione_simbolica, variabili);
+
+% Valutazione del gradiente nel punto specificato
+gradiente = double(subs(gradiente_simbolico, variabili, punto));
+
+% Visualizzazione del gradiente
+disp(gradiente);
+
+
 
 
 %{
@@ -107,3 +147,16 @@ disp(out);
 
 
 
+syms x1 x2
+f = - 2*x1^2 - x2^2 + 4*x1 + 2*x2
+A = [	
+-1  0; 
+0 -1; 
+1  2;
+-2 -1; 
+]
+b = [0;0;8;-2]
+xk = [0;3]
+iter = 1
+
+res = provafrank(f,A,b,xk,iter)

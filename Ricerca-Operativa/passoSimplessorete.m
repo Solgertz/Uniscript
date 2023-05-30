@@ -236,7 +236,7 @@ end
 dire=dire+"$"+matrivetlate(tetap,"\theta^{+}",0)+"\quad "+matrivetlate(tetam,"\theta^{-}",0)+"\quad "+matrivetlate(teta,"\theta",0)+"$\\";
 
 %CALCOLO ARCO USCENTE
-
+xfin=xtot;
 insperme=[];
 for i=1:size(Cp,2)
     for j=1:size(info,1)
@@ -244,7 +244,9 @@ for i=1:size(Cp,2)
             if(info(j,4)-xtot(j)==teta)
                 insperme=[insperme,Cp(:,i)];
             end
+            xfin(j)=xfin(j)+teta;
         end
+
     end
 end
 
@@ -255,6 +257,7 @@ for i=1:size(Cm,2)
             if(xtot(j)==teta)
                 insperte=[insperte,Cm(:,i)];
             end
+            xfin(j)=xfin(j)-teta;
         end
     end
 end
@@ -323,6 +326,6 @@ else
 end
 
 dire=dire+"La nuova tripartizione è: $"+matrivetlate(Tnew,"T",0)+"\quad "+matrivetlate(Lnew,"L",0)+"\quad "+matrivetlate(Unew,"U",0)+"$\\";
-
+dire=dire+matrivetlate(xfin,"x_{\text{finale}}",1);
 
 end

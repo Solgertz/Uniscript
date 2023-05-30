@@ -21,13 +21,17 @@ dire="\section{Cammini minimi:} $$"+matrivetlate(U,"N",0)+"\quad "+matrivetlate(
 f=[];
 fake=t;
 while(~isempty(U))
-    [~,u]=min(fake);
-    elem=find(info(:,1)==u);
+    [uscere,u]=min(fake);
+    if(isnan(uscere))
+        elem=[];
+    else
+        elem=find(info(:,1)==u);
+    end
     if(isempty(elem))
         U(U==u)=[];
         f=[f,u];
         fake(f)=Inf;
-        continue;
+        break;
     end
     uv=info(elem,:);
     for i=1:size(uv,1)
@@ -39,19 +43,28 @@ while(~isempty(U))
     end   
     dire=dire+"$$"+matrivetlate(U,"N",0)+"\quad "+matrivetlate(p,"p",0)+"\quad "+matrivetlate(t,"\pi",0)+" $$";
     U(U==u)=[];
-    f=[f,u];
+    %segnalo i potenziali non utilizzabili
     fake=t;
-    fake(f)=Inf;    
+    f=[f,u];
+    fake(f)=nan;
 end
 
 %stampalatex(dire);
-albero = digraph(p(p~=0),find(p));
+parti=p(p~=0);
+parti=parti(parti~=-1);
+vai=p;vai(vai==-1)=0;
+vai=find(vai);
+albero = digraph(parti,vai);
+ulb=albero;
 albero=albero.Edges;
 albero=table2array(albero);
 figure;
+%{
 treeplot(p);
 [x,y] = treelayout(p);
 text(x + 0.02,y,nomi);
+%}
+plot(ulb);
 title("Flusso Minimo secondo Dijsktra");
 
 end

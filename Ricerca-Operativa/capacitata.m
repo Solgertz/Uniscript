@@ -91,7 +91,7 @@ if(~isempty(albero))
     baus=ones(nodi,1);
     baus(1)=-(nodi-1);
     [xtot] = smartflux(nodi,albero',userei',size(albero,1),size(userei,1),baus);
-    due=dire+matrivetlate(xtot,"x",1);
+    due=due+matrivetlate(xtot,"x",1);
 end
 
 

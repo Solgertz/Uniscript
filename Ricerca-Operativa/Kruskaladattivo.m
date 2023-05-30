@@ -220,18 +220,22 @@ end
 
 
 %CONTROLLO SE GLI ARCHI OBBLIGATI NON FORMANO UN CICLO IRROMPIBILE
-
-if(~ammis)
+%CONTROLLO SE TRA GLI OBBLIGATI C'è UN NODO COLLEGATO A PIù DI 3 ARCHI
+if(~ammis && ~isempty(metalgear))
     metal=graph(metalgear(1,:),metalgear(2,:));
     if(hascycles(metal))
             xi=[];
         costov=[];
         ammis=false;
     end
+    for i=1:nodi
+        conto=sum(metalgear(:)==i);  %conto quante volte compare un certo nodo
+        if(conto>2)
+            xi=[];
+            costov=[];
+            ammis=false;
+            return;
+        end
+    end
 end
-
-
-
-
-
 end
