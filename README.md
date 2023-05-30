@@ -28,5 +28,6 @@ Tale path deve ovviamente puntare alla cartella che contiene i file *pdftlatex.e
 -simplesso() : applica l'algoritmo del simplesso se possibile
 -valPLI() : permette di risolvere tramite valutazioni un problema di PLI e inoltre calcola i tagli di Gomory
 -capacitata(): permette di risolvere il problema delle reti capacitate (ammissibilità, un passo del simplesso, Dijsktra, Faulk-Falkerson)
+-Frankwolfe(): permette di usare l'omonimo algoritmo. Tale algortimo è stato realizzato a partire da uno già esistente (https://github.com/Guray00/IngegneriaInformatica/blob/master/SECONDO%20ANNO/II%20SEMESTRE/Ricerca%20operativa/RicOp.m) si ringrazia il creatore. E' stato aggiustato per farlo funzionare anche nei casi di Poliedro come dominio e sia per problemi di massimo sia di minimo
 ### Lista script non testati a sufficienza
 - BranchEBound() : permette di fare il branch&bound di un qualsiasi problema
