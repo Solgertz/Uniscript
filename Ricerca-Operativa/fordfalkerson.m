@@ -20,56 +20,44 @@ dire="\section{Flusso Massimo con Ford-Falkerson}";
 v=0;
 x=G(:,5);
 %x=zeros(1,dimx);
+G(:,4)=G(:,3);
 Gx=G;N=dimp;
 [C,Ns,Nt,step]=edmondkarp(1,dimp,Gx);
 %[Gx] = graforesiduo(x,C);
 while(~isempty(C))
-%calcolo residui
-xr=[];
-C=[C,zeros(size(C,1),1)];
-for i=1:size(C,1)
-    ind=cercariga(G(:,[1,2]),C(i,[1:2]));
-    xr=[xr,x(ind)];
-    C(i,3)=G(ind,3);
-end
-[residui]=graforesiduo(xr,C);
-%calcolo theta
-%{
-insieme=[];
-for i=1:size(C,1)
-    elem=cercariga(Gx(:,[1,2]),C(i,[1:2]));
-    elem=Gx(elem,4);
-    insieme=[insieme,elem];
-end
-%}
-ulcera=residui(:,[1,2,4]);
-residui=residui(:,4);
-teta=min(residui);
-v=teta+v;
-dire=dire+"\subsection{}"+step+"$$"+matrivetlate(ulcera(:,[1:2]),"\text{A aumentanti}",0)+"\quad "+matrivetlate(ulcera(:,3),"Residui",0)+"\quad "+matrivetlate(teta,"\delta",0)+"\quad "+matrivetlate(v,"v",0)+"$$";
-C=C(:,[1,2]);
-%aggiorno flusso
-for i=1:size(Gx,1)
-    if(~isempty(cercariga(C,Gx(i,[1:2]))))
-        ind=cercariga(G(:,[1,2]),Gx(i,[1:2]));
-        if(~isempty(ind))
-            G(ind,5)=G(ind,5)+teta;  %aggiorno soluzione finale
-            x(ind)=x(ind)+teta;
-        end
-        Gx(i,5)=Gx(i,5)+teta;           %aggiorno step intermedio
+    %calcolo residui
+    C=[C,zeros(size(C,1),1)];
+    for i=1:size(C,1)
+        ind=cercariga(Gx(:,[1,2]),C(i,[1:2]));  %cerco arco C nel grafo dei residui
+        C(i,3)=Gx(ind,4);
     end
-    if(~isempty(cercariga(C,Gx(i,[2,1]))))
-        ind=cercariga(G(:,[1,2]),Gx(i,[1:2]));
-        if(~isempty(ind))
-            G(ind,5)=G(ind,5)-teta;  %aggiorno soluzione finale
-            x(ind)=x(ind)-teta;
+    residui=C(:,3);
+    teta=min(residui);
+    v=teta+v;
+    dire=dire+"\subsection{}"+step+"$$"+matrivetlate(C(:,[1:2]),"\text{A aumentanti}",0)+"\quad "+matrivetlate(C(:,3),"Residui",0)+"\quad "+matrivetlate(teta,"\delta",0)+"\quad "+matrivetlate(v,"v",0)+"$$";
+    C=C(:,[1,2]);
+    %aggiorno flusso
+    for i=1:size(Gx,1)
+        if(~isempty(cercariga(C,Gx(i,[1:2]))))
+            ind=cercariga(G(:,[1,2]),Gx(i,[1:2]));
+            if(~isempty(ind))
+                G(ind,5)=G(ind,5)+teta;  %aggiorno soluzione finale
+                x(ind)=x(ind)+teta;
+            end
+            Gx(i,5)=Gx(i,5)+teta;           %aggiorno step intermedio
         end
-        Gx(i,5)=Gx(i,5)-teta;           %aggiorno step intermedio
+        if(~isempty(cercariga(C,Gx(i,[2,1]))))
+            ind=cercariga(G(:,[1,2]),Gx(i,[1:2]));
+            if(~isempty(ind))
+                G(ind,5)=G(ind,5)-teta;  %aggiorno soluzione finale
+                x(ind)=x(ind)-teta;
+            end
+            Gx(i,5)=Gx(i,5)-teta;           %aggiorno step intermedio
+        end
     end
-end
-dire=dire+matrivetlate(x',"x",1);
-[Gx] = graforesiduo(x,G);
-[C,Ns,Nt,step]=edmondkarp(1,dimp,Gx);
+    dire=dire+matrivetlate(x',"x",1);
+    [Gx,G] = graforesiduo(x,G);
+    [C,Ns,Nt,step]=edmondkarp(1,dimp,Gx);
 end
 
 dire=dire+"\subsection{}"+step;

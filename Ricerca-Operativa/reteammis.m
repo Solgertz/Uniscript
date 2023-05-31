@@ -65,6 +65,9 @@ pi=zeros(1,dimT+1);
 
 start=T(1,1);%di solito è 1
 potenziali_fatti=T(1,1);
+contopotenza=unique(T(:));
+contopotenza=length(contopotenza)-1;
+%{
 for i=1:dimT
     if(~isempty(find(potenziali_fatti==T(1,i))) && isempty(find(potenziali_fatti==T(2,i))))
         pi(T(2,i))=cTT(i)+pi(T(1,i));
@@ -75,6 +78,26 @@ for i=1:dimT
         potenziali_fatti=[potenziali_fatti,T(1,i)];
     end
 end
+%}
+i=1;
+while(contopotenza>0)
+    if(~isempty(find(potenziali_fatti==T(1,i))) && isempty(find(potenziali_fatti==T(2,i))))
+        pi(T(2,i))=cTT(i)+pi(T(1,i));
+        potenziali_fatti=[potenziali_fatti,T(2,i)];
+        contopotenza=contopotenza-1;
+    end
+    if(~isempty(find(potenziali_fatti==T(2,i))) && isempty(find(potenziali_fatti==T(1,i))))
+        pi(T(1,i))=pi(T(2,i))-cTT(i);
+        potenziali_fatti=[potenziali_fatti,T(1,i)];
+        contopotenza=contopotenza-1;
+    end
+    if(i==dimT)
+        i=1;
+    else
+        i=i+1;
+    end
+end
+
 
 
 %ammissibilità 

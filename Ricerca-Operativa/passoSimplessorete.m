@@ -9,7 +9,7 @@ Tnew=T;Lnew=L;Unew=U;
 dire="\section{Primo passo del Simplesso}";
 
 %CALCOLO ARCO ENTRANTE
-
+%{
 minL=3;
 for i=1:size(L,2)
     if(costiL(i)<0 && costiL(i)<minL)
@@ -34,6 +34,52 @@ if(minL~=3 && minU~=Inf)%minimo secondo l'ordine lessicografico
             minimo=minU;
             stato=1;
         else
+            if(L(2,indL)<U(2,indU))
+                minimo=minL;
+                stato=0;
+            else
+                minimo=minU;
+                stato=1;
+            end
+        end
+    end
+else
+    if(minL~=3)
+        minimo=minL;
+        stato=0;
+    else
+        minimo=minU;
+        stato=1;
+    end
+end
+%}
+
+minL=3;
+for i=1:size(L,2)
+    if(costiL(i)<0)%primo negativo in ordine lessicografico
+        minL=costiL(i);
+        indL=i;
+        break;
+    end
+end
+minU=Inf;
+for i=1:size(U,2)
+    if(costiU(i)>0)  %primo positivo in ordine lessicografico
+        minU=costiU(i);
+        indU=i;
+        break;
+    end
+end
+
+if(minL~=3 && minU~=Inf)%minimo secondo l'ordine lessicografico
+    if(L(1,indL)<U(1,indU)) 
+        minimo=minL;
+        stato=0;
+    else
+        if(L(1,indL)>U(1,indU))
+            minimo=minU;
+            stato=1;
+        else %sono sicuramente in = per primo indice
             if(L(2,indL)<U(2,indU))
                 minimo=minL;
                 stato=0;

@@ -26,7 +26,7 @@ while(~isempty(Q))
 
 end
 
-if(isempty(Q))
+if(p(t)==-1)
     eccomi=eccomi+"$$Q=\varnothing \quad "+matrivetlate(p,"p",0)+"$$";
 end
 %NORMALIZZAZIONE cammino aumentante/taglio
