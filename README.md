@@ -15,19 +15,25 @@ Tale path deve ovviamente puntare alla cartella che contiene i file *pdftlatex.e
 ### Requisiti di PATH
 -si consiglia di inserire gli script all'interno della cartella standard di Matlab (C:\Users\NOMEUTENTE\Documents\MATLAB) senza creare separare i file in cartelle diverse
 ### Note
--di norma dopo l'esecuzione di una funzione, nella tab del prompt compariranno una lunga serie di scritte usate da latex. Non è un problema fate come nulla fosse. Tanto i risultati stanno in temp.pdf
+-per avviare gli script si utilizzi la classe matlabwizard. Ad esempio matlabwizard.simplesso(...).
+-si consiglia di utilizzare un massiccio uso del comando TAB nella prompt di matlab per l'autocompletamento del testo e di salvare tra i preferiti dei comandi ricorrenti (premendo la freccia verso l'alto all'interno della prompt si accede a una dashboard con tutti i comandi precedentemente dati e andando col cursore alla sinistra del comando lo si potrà aggiungere ai comandi preferiti in alto)
+-di norma dopo l'esecuzione di una funzione, nella tab del prompt compariranno una lunga serie di scritte usate da latex. Non è un problema fate come nulla fosse. Tanto i risultati stanno in temp.pdf (e dovrebbero essere aperti automaticamente con il lettore di pdf predefinito)
 -in caso nel prompt compaia una richiesta di input proveniente da Latex, stoppare la compilazione con il tasto rettangolare del debugger
 -di norma le funzioni non richiederanno input nel prompt (se lo facessero, stoppate la compilazione). L'unica che lo farà, sarà Hamilton() in modalità asimmetrica
+-alcune funzioni, come quello sulla rete capacitata, mostrano i risultati su delle tab plot di Matlab usate apposta per i grafici
 -tutti gli script non menzionati in questa lista sono di difficile utilizzo per via degli input richiesti (sono funzioni di utility delle funzioni generali)
+-solo e unicamente gli script di Frankwolfe e LKKT sono stati realizzati a partire da algoritmi resi disponibili in (https://github.com/Guray00/IngegneriaInformatica/blob/master/SECONDO%20ANNO/II%20SEMESTRE/Ricerca%20operativa/RicOp.m). Si ringrazia quindi il creatore. 
+Tali script sono stati modificati per migliorarne le performance e adattarli alla forma della classe.
 ### Lista script completamente funzionanti
--assegnamento() : permette di risolvere il problema di assegnamento (anche il caso di persone che si rifiutano di fare determinati lavori)
--convOdual() : prende in ingresso un sistema e lo converte come richiesto dall'utente (primale standard, duale standard, duale)
--Hemilton() : risolve il problema del TSPS e vi applica il BranchAndBound agli archi specificati
--zainocompleto() :  permette di risolvere il problema dello zaino (intero e binario insieme), 
--indagasoluzione() : permette di valutare l'ammissibilità di una base
--simplesso() : applica l'algoritmo del simplesso se possibile
--valPLI() : permette di risolvere tramite valutazioni un problema di PLI e inoltre calcola i tagli di Gomory
--capacitata(): permette di risolvere il problema delle reti capacitate (ammissibilità, un passo del simplesso, Dijsktra, Faulk-Falkerson)
--Frankwolfe(): permette di usare l'omonimo algoritmo. Tale algortimo è stato realizzato a partire da uno già esistente (https://github.com/Guray00/IngegneriaInformatica/blob/master/SECONDO%20ANNO/II%20SEMESTRE/Ricerca%20operativa/RicOp.m) si ringrazia il creatore. E' stato aggiustato per farlo funzionare anche nei casi di Poliedro come dominio e sia per problemi di massimo sia di minimo
-### Lista script non testati a sufficienza
-- BranchEBound() : permette di fare il branch&bound di un qualsiasi problema
+-Assegnamento() : permette di risolvere il problema di assegnamento (anche il caso di persone che si rifiutano di fare determinati lavori)
+-Standardizza() : prende in ingresso un sistema e lo converte come richiesto dall'utente (primale standard, duale standard, duale)
+-TSP() : risolve il problema del TSPS e vi applica il BranchAndBound agli archi specificati
+-Zaino() :  permette di risolvere il problema dello zaino (intero e binario insieme), 
+-TestOttimalit() : permette di valutare l'ammissibilità di una base
+-Simplesso() : applica l'algoritmo del simplesso a un problema di PL
+-valutazioniPLIeGomory() : permette di risolvere tramite valutazioni un problema di PLI e inoltre calcola i tagli di Gomory
+-ReteCapacitata(): permette di risolvere il problema delle reti capacitate (ammissibilità, un passo del simplesso, Dijsktra, Faulk-Falkerson)
+-Frank_Wolfe(): permette di applicare l'algoritmo di frank wolfe sia per sistemi sia per punti
+-GradienteProiettato(): permette di applicare l'algoritmo del gradiente proiettato 
+-LKKTsys(): permette di avere le soluzioni del sistema LKKT
+

@@ -1,7 +1,7 @@
-function res = Frankwolfe(f,A,b,xk,iter,tipo,punti)
+function Frankwolfe(f,A,b,xk,iter,tipo,punti)
 %FUNZIONE PRESA IN PRESTITO DA https://github.com/Guray00/IngegneriaInformatica/blob/master/SECONDO%20ANNO/II%20SEMESTRE/Ricerca%20operativa/RicOp.m
 %SI RINGRAZIA IL REALIZZATORE
-%LA SEGUENTE FUNZIONE è STATA LEGGERMENTE MODIFICATA
+%LA SEGUENTE FUNZIONE è STATA MODIFICATA
 
 
 %INPUT:
@@ -27,8 +27,6 @@ res = [];
 n_iter = 0; % Numero di iterazione
 while iter > 0
 
-	tmp = [];
-
 	iter = iter - 1;
 	
     
@@ -46,10 +44,12 @@ while iter > 0
     else
         %considero sempre il minimo perchè converto il gradiente
         yk=inf;
+        yaux=inf;
         for i=1:size(punti,1)
             ypunto=punti(i,:)*aux;
-            if(ypunto<yk)
+            if(ypunto<yaux)
                 yk=punti(i,:)';
+                yaux=ypunto;
             end
         end
     end
@@ -80,7 +80,6 @@ while iter > 0
     
     dire=dire+"\quad "+matrivetlate(tk,"t_k",0)+"\quad "+matrivetlate(xk,"x_{k+1}",0)+"$$";
     
-	res = [res;tmp];
     n_iter = n_iter + 1;
 
 end

@@ -1,7 +1,7 @@
 function [tipo,A,b,c,simb,VO] = convOdual(tipo,c,A,simb,b,risultato,stampa)
 %Funzioni usate:matrixadder,convOdual,mostrasistema,convertisimboli
 
-%Prende in ingresso:
+%INPUT:
 % -tipo (tipo di partenza): 1 (minimo), tipo 2 (massimo)
 % - VO: -1 (se sono passato da max a min o viceversa) altrimenti 1
 % -c (coefficienti funzione obiettivo)

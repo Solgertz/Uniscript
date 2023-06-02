@@ -4,7 +4,7 @@ clc
 
 % INPUT:
 % - T è la matrice del problema
-% - rifiuti: vettore 2*n che indica gli indici i,j delle "persone che
+% - rifiuti: vettore n*2 che indica gli indici i,j delle "persone che
 % rifiutano lavori"  (normalmente è vuota)
 
 %Vale per Cooperativo e non perchè hanno soluzioni a valori interi (PLI è un caso particolare di PL)
