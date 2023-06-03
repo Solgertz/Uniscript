@@ -1,4 +1,4 @@
-function gradienteproiettato(f,x0,A,b,iter)
+function gradienteproiettato(f,x0,A,b,tipo,iter)
 
 %INPUT
 %   -Ax<=b  primale standard
@@ -26,16 +26,25 @@ while(step<=iter)
         H=eye(size(aux,1))-aux;
 %CALCOLO DIREZIONE
         grd = double(subs(gradient(f),syX,xk));  
-        dk=-H*grd;
+        if(tipo==1)
+            dk=H*grd;
+        else
+            dk=-H*grd;
+        end
+
         primo=primo+"$$"+matrivetlate(step-1,"K",0)+"\quad "+matrivetlate(M,"M",0)+"\quad "+matrivetlate(H,"H",0)+"\quad "+matrivetlate(grd,"\triangledown f(x_k)",0)+"\quad "+matrivetlate(dk,"d_k",0);
         
         if(~isequal(dk,zeros(length(dk),1)))
 %CALCOLO tk cappuccio
             tkmax = linprog(-1,A*dk,b-A*xk,[],[],[],[],optimoptions('linprog','Display','none'));
 
-%CALCOLO tk             
-				tet = matlabFunction(subs(f,syX,xk+t*dk));
-
+%CALCOLO tk     
+                if(tipo==1)
+                    tet = matlabFunction(-subs(f,syX,xk+t*dk));
+                else
+                    tet = matlabFunction(subs(f,syX,xk+t*dk));
+                end
+                
 				pmin = fminbnd(tet,0,tkmax);
 				vals = [tet(0), tet(pmin), tet(tkmax)];
 				ts = [0,pmin,tkmax];

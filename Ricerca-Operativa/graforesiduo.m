@@ -3,8 +3,10 @@ function [Gx,G] = graforesiduo(x,G)
 
 Gx=[];
 for i=1:size(G,1)
-    if(x(i)<G(i,4))
-        residuo=G(i,4)-x(i);
+    %if(x(i)<G(i,4))
+    if(x(i)<G(i,3))
+        %residuo=G(i,4)-x(i);
+        residuo=G(i,3)-x(i);
         Gx=[Gx;G(i,[1:3]),residuo,x(i)];
         G(i,4)=residuo;
     end

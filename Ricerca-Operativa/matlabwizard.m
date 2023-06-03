@@ -120,14 +120,15 @@ classdef matlabwizard
             Frankwolfe(f,A,b,x0,iter,tipo,punti);            
            
         end
-        function GradienteProiettato(f,x0,A,b,iter)
+        function GradienteProiettato(f,x0,A,b,tipo,iter)
             %INPUT:
             %- f  funzione in linguaggio simbolico con variabili in x
             %- iter:    numero di iterazioni da far fare all'algoritmo al massimo
             %- ATTENZIONE:   da usare la forma Ax<=b  
             % per dominio POLIEDRO, ricavare con GEOGEBRA i vincoli associati ai punti
             %- x0:    vettore colonna
-            gradienteproiettato(f,x0,A,b,iter)
+            %- tipo:   max(1) o  min(0)
+            gradienteproiettato(f,x0,A,b,tipo,iter)
         end
         function LKKTsys(f,g,h)
             %INPUT:
