@@ -1,5 +1,7 @@
 # Uniscript
-Script e programmi creati durante il percorso Universitario
+Script e programmi creati durante il percorso Universitario.
+Se volete sostenere il mio lavoro, vi è risultato utile o semplicemente avete compassione per l'impegno che ho portato ai seguenti progetti, potete fare una piccola donazione all'account paypal: nilofabiano1@gmail.com
+Prometto che non utilizzero quei soldi per comprarmi manga di dubbio gusto (anche se probabilmente è già tanto se arriverò a 1$)
 
 
 ## RICERCA OPERATIVA

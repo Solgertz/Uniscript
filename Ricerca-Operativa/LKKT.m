@@ -3,17 +3,17 @@ function LKKT(f,g,h)
 %SI RINGRAZIA IL REALIZZATORE
 %LA SEGUENTE FUNZIONE è STATA MODIFICATA
 
-
+varx=symvar(f);
 syL = sym('l', size(g));
 syM = sym('m', size(h));
 syX = symvar([f;g;h]);
 
-eqs = gradient(f);
+eqs = gradient(f,varx);
 for i=1:size(g,1)
-	eqs = eqs + syL(i)*gradient(g(i));
+	eqs = eqs + syL(i)*gradient(g(i),varx);
 end
 for i=1:size(h,1)
-	eqs = eqs + syM(i)*gradient(h(i));
+	eqs = eqs + syM(i)*gradient(h(i),varx);
 end
 eqs = [eqs == 0];
 
